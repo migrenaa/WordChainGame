@@ -28,10 +28,10 @@ namespace WordChainGame.Web
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 5,
-                RequireNonLetterOrDigit = false,
-                RequireDigit = false,
-                RequireLowercase = true,
+                RequiredLength = 6,
+                RequireNonLetterOrDigit = true,
+                RequireDigit = true,
+                RequireLowercase = false,
                 RequireUppercase = false,
             };
             var dataProtectionProvider = options.DataProtectionProvider;
@@ -52,7 +52,7 @@ namespace WordChainGame.Web
 
         public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
         {
-            var appRoleManager = new ApplicationRoleManager(new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>()));
+            var appRoleManager = new ApplicationRoleManager(new RoleStore<IdentityRole>(context.Get<WordChainGameContext>()));
 
             return appRoleManager;
         }

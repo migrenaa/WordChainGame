@@ -42,12 +42,6 @@ namespace WordChainGame.Services.Services
             {
                 this.inappropriateWordRequests.Delete(request);
             }
-            
-        }
-
-        public User GetAdmin()
-        {
-            return this.users.Get(x => x.Roles.Select(r => r.RoleId).Contains(UserRole.Admin.ToString()))?.SingleOrDefault();
         }
     }
 }

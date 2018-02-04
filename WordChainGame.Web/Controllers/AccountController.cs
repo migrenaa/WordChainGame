@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -32,19 +33,9 @@ namespace WordChainGame.Web.Controllers
         private ApplicationRoleManager _roleManager;
         private IUserService users;
 
-        public AccountController()
+        public AccountController(IUserService users)
         {
-        }
-
-        public AccountController(ApplicationUserManager userManager, ApplicationRoleManager roleManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, 
-            IUserService users)
-        {
-            UserManager = userManager;
-            RoleManager = roleManager;
-            AccessTokenFormat = accessTokenFormat;
             this.users = users;
-
         }
 
         public ApplicationUserManager UserManager
@@ -118,10 +109,17 @@ namespace WordChainGame.Web.Controllers
 
         [Authorize]
         [HttpDelete]
-        public async Task<IHttpActionResult> DeleteAccount()
+        public async Task<IHttpActionResult> DeleteAccount(string password)
         {
             var userId = User.Identity.GetUserId();
             var user = await UserManager.FindByIdAsync(userId);
+
+            bool isPasswordValid = await UserManager.CheckPasswordAsync(user, password);
+
+            if(!isPasswordValid)
+            {
+                return Unauthorized();
+            }
 
             var result = await UserManager.DeleteAsync(user);
 
@@ -157,7 +155,8 @@ namespace WordChainGame.Web.Controllers
                 return GetErrorResult(result);
             }
 
-            var admin = this.users.GetAdmin();
+            var adminRoleId = (int)UserRole.Admin;
+            var admin = this.UserManager.Users.SingleOrDefault(x => x.Roles.Select(r => r.RoleId).Contains(adminRoleId.ToString()));
 
             if(admin == null)
             {

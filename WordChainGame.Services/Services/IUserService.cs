@@ -5,6 +5,5 @@ namespace WordChainGame.Services.Services
     public interface IUserService
     {
         void DeleteUserEntities(string userId);
-        User GetAdmin();
     }
 }
