@@ -8,6 +8,7 @@ namespace WordChainGame.Services.Services
     {
         PaginatedTopicsResponseModel Get(string orderBy, int top, int skip);
         PaginatedWordsResponseModel GetWords(int topicId, int top, int skip);
-        DetailsWordResponseModel AddWord(int topicId, string userId, WordRequestModel model);
+        ListedWordResponseModel AddWord(int topicId, string userId, WordRequestModel model);
+        void RequestWordAsInappropriate(string requesterId, int topicId, int wordId);
     }
 }

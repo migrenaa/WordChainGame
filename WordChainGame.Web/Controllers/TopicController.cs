@@ -1,17 +1,18 @@
-﻿using AutoMapper;
-using Microsoft.AspNet.Identity;
-using Swashbuckle.Swagger.Annotations;
-using System;
-using System.Net;
-using System.Web.Http;
-using WordChainGame.Data.Entities;
-using WordChainGame.DTO.Topic;
-using WordChainGame.DTO.Word;
-using WordChainGame.Services.Services;
-using WordChainGame.Services.UnitOfWork;
-
+﻿
 namespace WordChainGame.Web.Controllers
 {
+    using AutoMapper;
+    using Microsoft.AspNet.Identity;
+    using Swashbuckle.Swagger.Annotations;
+    using System.Net;
+    using System.Web.Http;
+    using WordChainGame.Common.CustomExceptions;
+    using WordChainGame.Data.Entities;
+    using WordChainGame.DTO.Topic;
+    using WordChainGame.DTO.Word;
+    using WordChainGame.Services.Services;
+    using WordChainGame.Services.UnitOfWork;
+
     [RoutePrefix("api/topics")]
     public class TopicController : ApiController
     {
@@ -35,7 +36,7 @@ namespace WordChainGame.Web.Controllers
         /// <param name="skip">Pagination model</param>
         /// <returns>Information about the topics and the author</returns>
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "User")]
         [Route("")]
         [SwaggerResponse(HttpStatusCode.OK, "Orders the result by given property.", typeof(PaginatedTopicsResponseModel))]
 
@@ -52,7 +53,7 @@ namespace WordChainGame.Web.Controllers
         /// </summary>
         /// <param name="model">The information about the topic</param>
         /// <returns>Details about inserted topic</returns>
-        [Authorize]
+        [Authorize(Roles = "User")]
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Invalid request model")]
         [SwaggerResponse(HttpStatusCode.OK, "Topic successfully created.", typeof(DetailsTopicResponseModel))]
@@ -76,7 +77,7 @@ namespace WordChainGame.Web.Controllers
         /// Gets all words in a topic.
         /// </summary>
         /// <returns>Details about inserted topic</returns>
-        [Authorize]
+        [Authorize(Roles = "User")]
         [HttpGet]
         [Route("{topicId}/words")]
         [SwaggerResponse(HttpStatusCode.NotFound, "Invalid topic id.")]
@@ -98,10 +99,11 @@ namespace WordChainGame.Web.Controllers
         /// Inserts word in a topic.
         /// </summary>
         /// <returns>Details about inserted topic</returns>
-        [Authorize]
-        [HttpGet]
+        [Authorize(Roles = "User")]
+        [HttpPost]
         [Route("{topicId}/words")]
         [SwaggerResponse(HttpStatusCode.NotFound, "Invalid topic id.")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "The word should start with other character or it is already added to this topic.")]
         [SwaggerResponse(HttpStatusCode.OK, "Word successfully inserted.", typeof(DetailsWordResponseModel))]
         public IHttpActionResult AddWord(int topicId, WordRequestModel model)
         {
@@ -115,7 +117,43 @@ namespace WordChainGame.Web.Controllers
                 return BadRequest(ModelState);
             }
             string authorId = User.Identity.GetUserId();
-            return Ok(this.topics.AddWord(topicId, authorId, model));
+            try
+            {
+                return Ok(this.topics.AddWord(topicId, authorId, model));
+            }
+            catch (InvalidWordException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Requests inappropriate word in a topic.
+        /// </summary>
+        /// <param name="topicId">The id of the topic</param>
+        /// <param name="wordId">The id of the word.</param>
+        /// <returns>Details about the word.</returns>
+        [Authorize(Roles = "User")]
+        [HttpPost]
+        [Route("{topicId}/words/{wordId}/inappropriate")]
+        [SwaggerResponse(HttpStatusCode.NotFound, "Invalid topic id.")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "Invalid word id.")]
+        [SwaggerResponse(HttpStatusCode.OK, "Word successfully inserted.")]
+        public IHttpActionResult AddInapropriateWord(int topicId, int wordId)
+        {
+            if (this.unitOfWork.Topics.GetByID(topicId) == null)
+            {
+                return NotFound();
+            }
+
+            if (this.unitOfWork.Words.GetByID(wordId) == null)
+            {
+                return BadRequest("Invalid word id. ");
+            }
+
+            string authorId = User.Identity.GetUserId();
+            this.topics.RequestWordAsInappropriate(authorId, topicId, wordId);
+            return Ok();
         }
     }
 }

@@ -13,6 +13,7 @@ namespace WordChainGame.Data.Entities
         public int TopicId { get; set; }
         public string WordContent { get; set; }
         public string AuthorId { get; set; }
+        public bool IsDeleted { get; set; }
         public DateTime DateCreated { get; set  ; }
         public Topic Topic { get; set; }
         public User Author { get; set; }

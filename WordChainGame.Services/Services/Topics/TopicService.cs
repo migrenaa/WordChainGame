@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using WordChainGame.Common.CustomExceptions;
     using WordChainGame.Data.Entities;
     using WordChainGame.DTO.Topic;
     using WordChainGame.DTO.Word;
@@ -50,7 +51,7 @@
 
         public PaginatedWordsResponseModel GetWords(int topicId, int top, int skip)
         {
-            var words = unitOfWork.Words.Get(x => x.TopicId == topicId);
+            var words = unitOfWork.Words.Get(x => x.TopicId == topicId && !x.IsDeleted);
             var count = words.Count();
             var paginatedWords = words.Skip(skip).Take(top);
             var response = new PaginatedWordsResponseModel
@@ -63,22 +64,64 @@
             return response;
         }
 
-        public DetailsWordResponseModel AddWord(int topicId, string userId, WordRequestModel model)
+        public ListedWordResponseModel AddWord(int topicId, string userId, WordRequestModel model)
         {
+            var topic = unitOfWork.Topics
+                                  .Get(filter: t => t.Id == topicId,
+                                       includeProperties: "Words")
+                                  .SingleOrDefault();
+
+            var lastWord = unitOfWork.Words
+                                     .Get(filter: w => w.TopicId == topicId,
+                                          orderBy: w => w.OrderBy(prop => prop.DateCreated))
+                                     .LastOrDefault();
+
+            if(lastWord != null)
+            {
+                var lastWordLastCharachter = lastWord.WordContent.Last().ToString();
+
+                if (topic.Words.Where(w => !w.IsDeleted).Select(w => w.WordContent).Contains(model.Word))
+                {
+                    throw new InvalidWordException($"The word is already added in this topic.");
+                }
+
+
+                if (topic.Words.Where(w => w.IsDeleted).Select(w => w.WordContent).Contains(model.Word))
+                {
+                    throw new InvalidWordException($"The word is already marked as inappropriate in this topic.");
+                }
+
+                if (!model.Word.StartsWith(lastWordLastCharachter))
+                {
+                    throw new InvalidWordException($"The new word should start with {lastWordLastCharachter}.");
+                }
+            }
+           
             var word = mapper.Map<Word>(model);
             word.AuthorId = userId;
             word.DateCreated = DateTime.Now;
             word.TopicId = topicId;
 
             unitOfWork.Words.Insert(word);
-
-            var topic = unitOfWork.Topics.GetByID(topicId);
             topic.WordsCount++;
 
             unitOfWork.Commit();
 
-            return mapper.Map<DetailsWordResponseModel>(word);
+            return mapper.Map<ListedWordResponseModel>(word);
 
+        }
+
+        public void RequestWordAsInappropriate(string requesterId, int topicId, int wordId)
+        {
+            var inappropriateWordRequest = new InappropriateWordRequest
+            {
+                DateCreated = DateTime.Now,
+                InappropriateWordId = wordId,
+                RequesterId = requesterId
+            };
+
+            unitOfWork.InappropriateWordRequests.Insert(inappropriateWordRequest);
+            unitOfWork.Commit();
         }
     }
 }

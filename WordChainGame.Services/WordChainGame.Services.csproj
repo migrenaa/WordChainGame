@@ -58,15 +58,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\ITopicService.cs" />
-    <Compile Include="Services\TopicService.cs" />
+    <Compile Include="Services\Topics\ITopicService.cs" />
+    <Compile Include="Services\Topics\TopicService.cs" />
+    <Compile Include="Services\Words\IWordService.cs" />
+    <Compile Include="Services\Words\WordService.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Repositories\IGenericRepository.cs" />
-    <Compile Include="Services\IUserService.cs" />
-    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\Users\IUserService.cs" />
+    <Compile Include="Services\Users\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

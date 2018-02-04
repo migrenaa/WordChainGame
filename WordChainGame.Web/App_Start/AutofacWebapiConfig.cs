@@ -12,6 +12,7 @@ namespace WordChainGame.Web.App_Start
     using WordChainGame.Data.Model;
     using WordChainGame.Services.Repositories;
     using WordChainGame.Services.Services;
+    using WordChainGame.Services.Services.Words;
     using WordChainGame.Services.UnitOfWork;
     using WordChainGame.Utils.MapperProfile;
 
@@ -52,6 +53,10 @@ namespace WordChainGame.Web.App_Start
 
             builder.RegisterType<TopicService>()
                    .As<ITopicService>()
+                   .InstancePerRequest();
+
+            builder.RegisterType<WordService>()
+                   .As<IWordService>()
                    .InstancePerRequest();
 
             builder.RegisterType<SecureDataFormat<AuthenticationTicket>>()

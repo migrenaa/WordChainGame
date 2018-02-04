@@ -3,6 +3,7 @@ namespace WordChainGame.Utils.MapperProfile
 {
     using AutoMapper;
     using WordChainGame.Data.Entities;
+    using WordChainGame.DTO.InappropriateWordRequests;
     using WordChainGame.DTO.Topic;
     using WordChainGame.DTO.User;
     using WordChainGame.DTO.Word;
@@ -31,10 +32,6 @@ namespace WordChainGame.Utils.MapperProfile
             CreateMap<WordRequestModel, Word>()
                 .ForMember(dest => dest.WordContent, opts => opts.MapFrom(w => w.Word))
                 .ForAllOtherMembers(opts => opts.Ignore());
-
-
-
-
 
         }
     }

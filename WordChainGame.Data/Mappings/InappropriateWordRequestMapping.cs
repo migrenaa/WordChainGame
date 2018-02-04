@@ -13,7 +13,10 @@ namespace WordChainGame.Data.Mappings
 
             this.Property(p => p.DateCreated)
                 .IsRequired();
-            
+
+            this.Property(p => p.IsInappropriate)
+                .IsOptional();
+
             this.HasRequired(p => p.InappropriateWord)
                 .WithMany(p => p.InappropriateWordRequests)
                 .HasForeignKey(p => p.InappropriateWordId);
