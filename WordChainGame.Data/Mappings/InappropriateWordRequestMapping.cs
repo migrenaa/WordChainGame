@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity.ModelConfiguration;
 using WordChainGame.Data.Entities;
 
 namespace WordChainGame.Data.Mappings
@@ -18,14 +13,15 @@ namespace WordChainGame.Data.Mappings
 
             this.Property(p => p.DateCreated)
                 .IsRequired();
-
-            this.Property(p => p.IsInappropriate)
-                .IsRequired();
-
+            
             this.HasRequired(p => p.InappropriateWord)
                 .WithMany(p => p.InappropriateWordRequests)
                 .HasForeignKey(p => p.InappropriateWordId);
 
+            this.HasRequired(p => p.Requester)
+                .WithMany(p => p.InappropriateWordRequests)
+                .HasForeignKey(p => p.RequesterId);
+            
         }
     }
 }

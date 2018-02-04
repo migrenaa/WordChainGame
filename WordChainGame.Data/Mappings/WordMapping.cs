@@ -20,7 +20,13 @@ namespace WordChainGame.Data.Mappings
 
             this.HasRequired(p => p.Topic)
                 .WithMany(p => p.Words)
-                .HasForeignKey(p => p.TopicId);
+                .HasForeignKey(p => p.TopicId)
+                .WillCascadeOnDelete(false); 
+
+            this.HasRequired(p => p.Author)
+                .WithMany(p => p.Words)
+                .HasForeignKey(p => p.AuthorId)
+                .WillCascadeOnDelete(false);
 
         }
     }

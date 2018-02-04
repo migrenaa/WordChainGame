@@ -13,6 +13,7 @@ namespace WordChainGame.Data.Entities
         public int GameId { get; set; }
         public string Name { get; set; }
         public int WordsCount { get; set; }
+        public User Author { get; set; }
         public Game Game { get; set; }
         public virtual ICollection<Word> Words { get; set; }
     }

@@ -4,6 +4,7 @@ namespace WordChainGame.Web.App_Start
 {
     using Autofac;
     using Autofac.Integration.WebApi;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System.Data.Entity;
     using System.Reflection;
     using System.Web.Http;
@@ -32,7 +33,7 @@ namespace WordChainGame.Web.App_Start
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             builder.RegisterType<WordChainGameContext>()
-                   .As<DbContext>()
+                   .As<IdentityDbContext>()
                    .InstancePerRequest();
 
             builder.RegisterType<DbFactory>()

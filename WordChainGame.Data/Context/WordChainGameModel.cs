@@ -1,11 +1,12 @@
 ﻿
 namespace WordChainGame.Data.Model
 {
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System.Data.Entity;
     using WordChainGame.Data.Entities;
     using WordChainGame.Data.Mappings;
 
-    public partial class WordChainGameContext : DbContext
+    public partial class WordChainGameContext : IdentityDbContext<User>
     {
         public WordChainGameContext()
             : base("name=WordChainGameConnection")
@@ -23,6 +24,7 @@ namespace WordChainGame.Data.Model
             modelBuilder.Configurations.Add(new InappropriateWordRequestMapping());
             modelBuilder.Configurations.Add(new TopicMapping());
             modelBuilder.Configurations.Add(new WordMapping());
+            base.OnModelCreating(modelBuilder);
 
         }
     }

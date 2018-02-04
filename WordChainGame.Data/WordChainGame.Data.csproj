@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0E98B843-3D40-4B31-90EB-079FE737EF61}</ProjectGuid>
+    <ProjectGuid>{C94E8043-70B7-458F-A00E-0A58CCBAF95D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WordChainGame.Data</RootNamespace>
@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -53,20 +53,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\WordChainGameModel.cs" />
     <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\InappropriateWordRequest.cs" />
     <Compile Include="Entities\Topic.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Word.cs" />
     <Compile Include="Mappings\GameMapping.cs" />
     <Compile Include="Mappings\InappropriateWordRequestMapping.cs" />
     <Compile Include="Mappings\TopicMapping.cs" />
+    <Compile Include="Mappings\UserMappings.cs" />
     <Compile Include="Mappings\WordMapping.cs" />
-    <Compile Include="Migrations\201801281249160_InitialMigration.cs" />
-    <Compile Include="Migrations\201801281249160_InitialMigration.Designer.cs">
-      <DependentUpon>201801281249160_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201802041355367_initial.cs" />
+    <Compile Include="Migrations\201802041355367_initial.Designer.cs">
+      <DependentUpon>201802041355367_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Model\WordChainGameModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,8 +76,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201801281249160_InitialMigration.resx">
-      <DependentUpon>201801281249160_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201802041355367_initial.resx">
+      <DependentUpon>201802041355367_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

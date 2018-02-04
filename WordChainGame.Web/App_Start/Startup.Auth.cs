@@ -10,6 +10,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using WordChainGame.Web.Providers;
 using WordChainGame.Web.Models;
+using WordChainGame.Data.Model;
 
 namespace WordChainGame.Web
 {
@@ -23,7 +24,7 @@ namespace WordChainGame.Web
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context and user manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext(() => new WordChainGameContext());
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
 
             // Enable the application to use a cookie to store information for the signed in user

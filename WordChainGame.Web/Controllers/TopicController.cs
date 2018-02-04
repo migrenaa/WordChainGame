@@ -17,8 +17,8 @@ namespace WordChainGame.Web.Controllers
         // GET: Topic
         public IQueryable<Topic> GetCustomerList()
         {
-            var topics = topicsRepository.GetAll();
-            return topicsRepository.GetAll();
+            var topics = topicsRepository.Get();
+            return topicsRepository.Get().AsQueryable();
         }
     }
 }

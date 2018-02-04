@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WordChainGame.Data.Entities
 {
@@ -15,8 +12,10 @@ namespace WordChainGame.Data.Entities
         public int Id { get; set; }
         public int TopicId { get; set; }
         public string WordContent { get; set; }
+        public string AuthorId { get; set; }
         public DateTime DateCreated { get; set  ; }
         public Topic Topic { get; set; }
+        public User Author { get; set; }
         public virtual ICollection<InappropriateWordRequest> InappropriateWordRequests { get; set; }
 
     }
