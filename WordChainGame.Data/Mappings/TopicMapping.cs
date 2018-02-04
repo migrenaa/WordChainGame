@@ -17,11 +17,7 @@ namespace WordChainGame.Data.Mappings
 
             this.Property(p => p.WordsCount)
                 .IsRequired();
-
-            this.HasRequired(p => p.Game)
-                .WithMany(p => p.Topics)
-                .HasForeignKey(p => p.GameId);
-
+            
             this.HasRequired(p => p.Author)
                 .WithMany(p => p.Topics)
                 .HasForeignKey(p => p.AuthorId);

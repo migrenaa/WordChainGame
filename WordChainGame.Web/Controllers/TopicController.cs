@@ -1,24 +1,121 @@
-﻿using System.Linq;
+﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
+using Swashbuckle.Swagger.Annotations;
+using System;
+using System.Net;
 using System.Web.Http;
 using WordChainGame.Data.Entities;
-using WordChainGame.Services.Repositories;
+using WordChainGame.DTO.Topic;
+using WordChainGame.DTO.Word;
+using WordChainGame.Services.Services;
+using WordChainGame.Services.UnitOfWork;
 
 namespace WordChainGame.Web.Controllers
 {
+    [RoutePrefix("api/topics")]
     public class TopicController : ApiController
     {
-        private readonly IGenericRepository<Topic> topicsRepository;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
+        private readonly ITopicService topics;
 
-        public TopicController(IGenericRepository<Topic> topicsRepository)
+        public TopicController(IUnitOfWork unitOfWork, IMapper mapper, ITopicService topics)
         {
-            this.topicsRepository = topicsRepository;
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
+            this.topics = topics;
         }
 
-        // GET: Topic
-        public IQueryable<Topic> GetCustomerList()
+
+        /// <summary>
+        /// Gets all topics ordered. The result is paginated.
+        /// </summary>
+        /// <param name="orderBy">name/wordscount</param>
+        /// <param name="top">Pagination model</param>
+        /// <param name="skip">Pagination model</param>
+        /// <returns>Information about the topics and the author</returns>
+        [HttpGet]
+        [Authorize]
+        [Route("")]
+        [SwaggerResponse(HttpStatusCode.OK, "Orders the result by given property.", typeof(PaginatedTopicsResponseModel))]
+
+        public IHttpActionResult Get(string orderBy, int top, int skip)
         {
-            var topics = topicsRepository.Get();
-            return topicsRepository.Get().AsQueryable();
+            top = top < 0 ? 10 : top;
+            skip = skip < 0 ? 0 : skip;
+            return Ok(this.topics.Get(orderBy, top, skip));
+        }
+
+
+        /// <summary>
+        /// Creates new topic.
+        /// </summary>
+        /// <param name="model">The information about the topic</param>
+        /// <returns>Details about inserted topic</returns>
+        [Authorize]
+        [HttpPost]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "Invalid request model")]
+        [SwaggerResponse(HttpStatusCode.OK, "Topic successfully created.", typeof(DetailsTopicResponseModel))]
+        public IHttpActionResult Post(TopicRequestModel model)
+        {
+            if (model == null || !ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var topic = this.mapper.Map<Topic>(model);
+            topic.AuthorId = User.Identity.GetUserId();
+            topic.WordsCount = 0;
+
+            var added = this.unitOfWork.Topics.Insert(topic);
+            return Ok(this.mapper.Map<DetailsTopicResponseModel>(added));
+        }
+
+
+        /// <summary>
+        /// Gets all words in a topic.
+        /// </summary>
+        /// <returns>Details about inserted topic</returns>
+        [Authorize]
+        [HttpGet]
+        [Route("{topicId}/words")]
+        [SwaggerResponse(HttpStatusCode.NotFound, "Invalid topic id.")]
+        [SwaggerResponse(HttpStatusCode.OK, "All words by topic paginated, ordered by date created.", typeof(PaginatedWordsResponseModel))]
+        public IHttpActionResult GetWords(int topicId, int top, int skip)
+        {
+            if (this.unitOfWork.Topics.GetByID(topicId) == null)
+            {
+                return NotFound();
+            }
+
+            top = top < 0 ? 10 : top;
+            skip = skip < 0 ? 0 : skip;
+
+            return Ok(this.topics.GetWords(topicId, top, skip));
+        }
+
+        /// <summary>
+        /// Inserts word in a topic.
+        /// </summary>
+        /// <returns>Details about inserted topic</returns>
+        [Authorize]
+        [HttpGet]
+        [Route("{topicId}/words")]
+        [SwaggerResponse(HttpStatusCode.NotFound, "Invalid topic id.")]
+        [SwaggerResponse(HttpStatusCode.OK, "Word successfully inserted.", typeof(DetailsWordResponseModel))]
+        public IHttpActionResult AddWord(int topicId, WordRequestModel model)
+        {
+            if (this.unitOfWork.Topics.GetByID(topicId) == null)
+            {
+                return NotFound();
+            }
+
+            if (model == null || !ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            string authorId = User.Identity.GetUserId();
+            return Ok(this.topics.AddWord(topicId, authorId, model));
         }
     }
 }

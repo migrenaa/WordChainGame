@@ -34,6 +34,7 @@
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
@@ -44,10 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="General\PaginationResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Topic\TopicModel.cs" />
+    <Compile Include="Topic\ListedTopicResponseModel.cs" />
+    <Compile Include="Topic\DetailsTopicResponseModel.cs" />
+    <Compile Include="Topic\PaginatedTopicsResponseModel.cs" />
     <Compile Include="Topic\TopicRequestModel.cs" />
     <Compile Include="User\DeleteAccountRequestModel.cs" />
+    <Compile Include="User\UserResponseModel.cs" />
+    <Compile Include="Word\DetailsWordResponseModel.cs" />
+    <Compile Include="Word\ListedWordResponseModel.cs" />
+    <Compile Include="Word\PaginatedWordsResponseModel.cs" />
+    <Compile Include="Word\WordRequestModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

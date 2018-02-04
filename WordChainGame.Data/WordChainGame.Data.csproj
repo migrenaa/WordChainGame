@@ -54,12 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\WordChainGameModel.cs" />
-    <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\InappropriateWordRequest.cs" />
     <Compile Include="Entities\Topic.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Word.cs" />
-    <Compile Include="Mappings\GameMapping.cs" />
     <Compile Include="Mappings\InappropriateWordRequestMapping.cs" />
     <Compile Include="Mappings\TopicMapping.cs" />
     <Compile Include="Mappings\UserMappings.cs" />
@@ -67,6 +65,10 @@
     <Compile Include="Migrations\201802041355367_initial.cs" />
     <Compile Include="Migrations\201802041355367_initial.Designer.cs">
       <DependentUpon>201802041355367_initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802041944228_RemovedGameEntity.cs" />
+    <Compile Include="Migrations\201802041944228_RemovedGameEntity.Designer.cs">
+      <DependentUpon>201802041944228_RemovedGameEntity.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +80,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201802041355367_initial.resx">
       <DependentUpon>201802041355367_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802041944228_RemovedGameEntity.resx">
+      <DependentUpon>201802041944228_RemovedGameEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

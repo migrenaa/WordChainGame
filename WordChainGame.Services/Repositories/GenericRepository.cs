@@ -7,28 +7,17 @@ namespace WordChainGame.Services.Repositories
     using System.Linq;
     using System.Linq.Expressions;
     using WordChainGame.Data.Model;
-    using WordChainGame.Services.Factory;
 
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
 
         private WordChainGameContext dbContext;
         private DbSet<T> dbSet;
-        protected IDbFactory DbFactory
-        {
-            get;
-            private set;
-        }
 
-        protected WordChainGameContext DbContext
+        public GenericRepository(WordChainGameContext context)
         {
-            get { return dbContext ?? (dbContext = DbFactory.Init()); }
-        }
-
-        public GenericRepository(IDbFactory dbFactory)
-        {
-            DbFactory = dbFactory;
-            dbSet = DbContext.Set<T>();
+            dbContext = context;
+            dbSet = context.Set<T>();
 
         }
 
@@ -65,9 +54,10 @@ namespace WordChainGame.Services.Repositories
             return dbSet.Find(id);
         }
 
-        public virtual void Insert(T entity)
+        public virtual T Insert(T entity)
         {
-            dbSet.Add(entity);
+            var added = dbSet.Add(entity);
+            return added;
         }
 
         public virtual void Delete(object id)

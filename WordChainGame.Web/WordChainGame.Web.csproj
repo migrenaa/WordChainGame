@@ -248,7 +248,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -353,6 +352,10 @@
     <ProjectReference Include="..\WordChainGame.Services\WordChainGame.Services.csproj">
       <Project>{22D24D1A-F99C-49C3-9850-0E372E0A3465}</Project>
       <Name>WordChainGame.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WordChainGame.Utils\WordChainGame.Infrastructure.csproj">
+      <Project>{30E8952F-0DB1-4C4E-9506-F7FA5AA8673F}</Project>
+      <Name>WordChainGame.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

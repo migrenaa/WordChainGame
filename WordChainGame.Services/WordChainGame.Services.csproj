@@ -58,8 +58,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Factory\DbFactory.cs" />
-    <Compile Include="Factory\IDbFactory.cs" />
+    <Compile Include="Services\ITopicService.cs" />
+    <Compile Include="Services\TopicService.cs" />
+    <Compile Include="UnitOfWork\UnitOfWork.cs" />
+    <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Repositories\IGenericRepository.cs" />
@@ -78,6 +80,10 @@
     <ProjectReference Include="..\WordChainGame.Data\WordChainGame.Data.csproj">
       <Project>{C94E8043-70B7-458F-A00E-0A58CCBAF95D}</Project>
       <Name>WordChainGame.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WordChainGame.DTO\WordChainGame.DTO.csproj">
+      <Project>{68ECF5A0-C3A3-4C79-AC4C-5EFCFFBE7639}</Project>
+      <Name>WordChainGame.DTO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

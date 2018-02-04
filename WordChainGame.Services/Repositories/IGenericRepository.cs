@@ -15,7 +15,7 @@ namespace WordChainGame.Services.Repositories
                     string includeProperties = "");
 
         T GetByID(object id);
-        void Insert(T entity);
+        T Insert(T entity);
         void Delete(object id);
         void Delete(T entityToDelete);
         void Update(T entityToUpdate);

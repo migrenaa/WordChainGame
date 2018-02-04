@@ -1,47 +1,42 @@
-﻿using System.Linq;
-using WordChainGame.Common.Enumerations;
-using WordChainGame.Data.Entities;
-using WordChainGame.Services.Repositories;
-
+﻿
 namespace WordChainGame.Services.Services
 {
+    using WordChainGame.Services.UnitOfWork;
+
     public class UserService : IUserService
     {
-        private readonly IGenericRepository<Topic> topics;
-        private readonly IGenericRepository<Word> words;
-        private readonly IGenericRepository<InappropriateWordRequest> inappropriateWordRequests;
-        private readonly IGenericRepository<User> users;
+        private readonly IUnitOfWork unitOfWork;
+      
 
-        public UserService(IGenericRepository<Topic> topics, IGenericRepository<Word> words,
-            IGenericRepository<InappropriateWordRequest> inappropriateWordRequests, IGenericRepository<User> users)
+        public UserService(IUnitOfWork unitOfWork)
         {
-            this.topics = topics;
-            this.words = words;
-            this.users = users;
-            this.inappropriateWordRequests = inappropriateWordRequests;
+            this.unitOfWork = unitOfWork;
         }
+
         public void DeleteUserEntities(string userId)
         {
-            var topicsToDelete = topics.Get(x => x.AuthorId == userId);
+            var topicsToDelete = unitOfWork.Topics.Get(x => x.AuthorId == userId);
 
             foreach (var topic in topicsToDelete)
             {
-                this.topics.Delete(topic);
+                unitOfWork.Topics.Delete(topic);
             }
 
-            var wordsToDelete = words.Get(x => x.AuthorId == userId);
+            var wordsToDelete = unitOfWork.Words.Get(x => x.AuthorId == userId);
 
             foreach (var word in wordsToDelete)
             {
-                this.words.Delete(word);
+                unitOfWork.Words.Delete(word);
             }
 
-            var inappropriateWordRequestsToDelete = inappropriateWordRequests.Get(x => x.RequesterId == userId);
+            var inappropriateWordRequestsToDelete = unitOfWork.InappropriateWordRequests.Get(x => x.RequesterId == userId);
 
             foreach (var request in inappropriateWordRequestsToDelete)
             {
-                this.inappropriateWordRequests.Delete(request);
+                unitOfWork.InappropriateWordRequests.Delete(request);
             }
+
+            unitOfWork.Commit();
         }
     }
 }

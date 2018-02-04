@@ -4,17 +4,16 @@ namespace WordChainGame.Web.App_Start
 {
     using Autofac;
     using Autofac.Integration.WebApi;
-    using Microsoft.AspNet.Identity.EntityFramework;
+    using AutoMapper;
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.DataHandler;
-    using System.Data.Entity;
     using System.Reflection;
     using System.Web.Http;
-    using WordChainGame.Data.Entities;
     using WordChainGame.Data.Model;
-    using WordChainGame.Services.Factory;
     using WordChainGame.Services.Repositories;
     using WordChainGame.Services.Services;
+    using WordChainGame.Services.UnitOfWork;
+    using WordChainGame.Utils.MapperProfile;
 
     public class AutofacWebapiConfig
     {
@@ -37,24 +36,34 @@ namespace WordChainGame.Web.App_Start
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             builder.RegisterType<WordChainGameContext>()
-                   .As<IdentityDbContext<User>>()
-                   .InstancePerRequest();
-
-            builder.RegisterType<DbFactory>()
-                   .As<IDbFactory>()
                    .InstancePerRequest();
 
             builder.RegisterGeneric(typeof(GenericRepository<>))
                    .As(typeof(IGenericRepository<>))
                    .InstancePerRequest();
 
+            builder.RegisterType<UnitOfWork>()
+                   .As<IUnitOfWork>()
+                   .InstancePerRequest();
+
             builder.RegisterType<UserService>()
                    .As<IUserService>()
+                   .InstancePerRequest();
+
+            builder.RegisterType<TopicService>()
+                   .As<ITopicService>()
                    .InstancePerRequest();
 
             builder.RegisterType<SecureDataFormat<AuthenticationTicket>>()
                    .As<ISecureDataFormat<AuthenticationTicket>>()
                    .InstancePerRequest();
+
+            builder.Register(c => new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new WordChainGameProfile());
+            })).AsSelf().SingleInstance();
+
+            builder.Register(c => c.Resolve<MapperConfiguration>().CreateMapper(c.Resolve)).As<IMapper>().InstancePerLifetimeScope();
 
             //Set the dependency resolver to be Autofac.  
             Container = builder.Build();
