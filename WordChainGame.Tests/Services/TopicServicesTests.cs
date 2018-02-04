@@ -48,8 +48,6 @@ namespace WordChainGame.Tests.Services
 
             this.mockedUnitOfWork.Setup(x => x.Topics.Get(It.IsAny<Expression<Func<Topic, bool>>>(), null, It.IsAny<string>()))
                                  .Returns(new List<Topic> { topic });
-            this.mockedUnitOfWork.Setup(x => x.Words.Get(It.IsAny<Expression<Func<Word, bool>>>(), null, It.IsAny<string>()))
-                             .Returns(() => null);
             this.mockedUnitOfWork.Setup(x => x.Words.Insert(It.IsAny<Word>()));
             this.mockedUnitOfWork.Setup(x => x.Commit());
 
@@ -78,8 +76,6 @@ namespace WordChainGame.Tests.Services
       
             this.mockedUnitOfWork.Setup(x => x.Topics.Get(It.IsAny<Expression<Func<Topic, bool>>>(), null, It.IsAny<string>()))
                                  .Returns(new List<Topic> { topic });
-            this.mockedUnitOfWork.Setup(x => x.Words.Get(It.IsAny<Expression<Func<Word, bool>>>(), It.IsAny<Func<IQueryable<Word>, IOrderedQueryable<Word>>>(), It.IsAny<string>()))
-                             .Returns(wordsInTopic);
             this.mockedUnitOfWork.Setup(x => x.Words.Insert(It.IsAny<Word>()));
             this.mockedUnitOfWork.Setup(x => x.Commit());
 
@@ -107,8 +103,6 @@ namespace WordChainGame.Tests.Services
 
             this.mockedUnitOfWork.Setup(x => x.Topics.Get(It.IsAny<Expression<Func<Topic, bool>>>(), null, It.IsAny<string>()))
                                  .Returns(new List<Topic> { topic });
-            this.mockedUnitOfWork.Setup(x => x.Words.Get(It.IsAny<Expression<Func<Word, bool>>>(), It.IsAny<Func<IQueryable<Word>, IOrderedQueryable<Word>>>(), It.IsAny<string>()))
-                             .Returns(wordsInTopic);
             this.mockedUnitOfWork.Setup(x => x.Words.Insert(It.IsAny<Word>()));
             this.mockedUnitOfWork.Setup(x => x.Commit());
 
@@ -135,8 +129,6 @@ namespace WordChainGame.Tests.Services
 
             this.mockedUnitOfWork.Setup(x => x.Topics.Get(It.IsAny<Expression<Func<Topic, bool>>>(), null, It.IsAny<string>()))
                                  .Returns(new List<Topic> { topic });
-            this.mockedUnitOfWork.Setup(x => x.Words.Get(It.IsAny<Expression<Func<Word, bool>>>(), It.IsAny<Func<IQueryable<Word>, IOrderedQueryable<Word>>>(), It.IsAny<string>()))
-                             .Returns(wordsInTopic);
             this.mockedUnitOfWork.Setup(x => x.Words.Insert(It.IsAny<Word>()));
             this.mockedUnitOfWork.Setup(x => x.Commit());
 
@@ -163,8 +155,6 @@ namespace WordChainGame.Tests.Services
 
             this.mockedUnitOfWork.Setup(x => x.Topics.Get(It.IsAny<Expression<Func<Topic, bool>>>(), null, It.IsAny<string>()))
                                  .Returns(new List<Topic> { topic });
-            this.mockedUnitOfWork.Setup(x => x.Words.Get(It.IsAny<Expression<Func<Word, bool>>>(), It.IsAny<Func<IQueryable<Word>, IOrderedQueryable<Word>>>(), It.IsAny<string>()))
-                             .Returns(wordsInTopic);
             this.mockedUnitOfWork.Setup(x => x.Words.Insert(It.IsAny<Word>()));
             this.mockedUnitOfWork.Setup(x => x.Commit());
 

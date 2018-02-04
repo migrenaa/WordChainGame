@@ -71,10 +71,8 @@
                                        includeProperties: "Words")
                                   .SingleOrDefault();
 
-            var lastWord = unitOfWork.Words
-                                     .Get(filter: w => w.TopicId == topicId,
-                                          orderBy: w => w.OrderBy(prop => prop.DateCreated))
-                                     .LastOrDefault();
+            var lastWord = topic.Words.OrderBy(w => w.DateCreated)
+                                      .LastOrDefault();
 
             if(lastWord != null)
             {
