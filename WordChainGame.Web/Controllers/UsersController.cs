@@ -63,6 +63,11 @@ namespace WordChainGame.Web.Controllers
             var userId = User.Identity.GetUserId();
             var user = await UserManager.FindByIdAsync(userId);
 
+            if(user.Roles.Select(x => x.RoleId).Contains(((int)UserRole.Admin).ToString()))
+            {
+                return BadRequest("The admin cannot be deleted.");
+            }
+
             bool isPasswordValid = await UserManager.CheckPasswordAsync(user, password);
 
             if(!isPasswordValid)

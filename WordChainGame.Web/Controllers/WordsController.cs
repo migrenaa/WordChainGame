@@ -67,7 +67,7 @@ namespace WordChainGame.Web.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, "Word not found")]
         public IHttpActionResult UpdateInappropriateWord(int wordId)
         {
-            var word = unitOfWork.Words.Get(w => w.Id == wordId);
+            var word = unitOfWork.Words.GetByID(wordId);
             if(word == null)
             {
                 return NotFound();
@@ -90,7 +90,7 @@ namespace WordChainGame.Web.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, "Invalid word Id.")]
         public IHttpActionResult Delete(int wordId)
         {
-            var word = unitOfWork.Words.Get(w => w.Id == wordId);
+            var word = unitOfWork.Words.GetByID(wordId);
             if (word == null)
             {
                 return NotFound();
