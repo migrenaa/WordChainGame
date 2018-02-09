@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace WordChainGame.Data.Entities
 {
+    using System;
+    using System.Collections.Generic;
+
     public partial class Word
     {
         public Word()

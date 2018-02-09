@@ -1,23 +1,25 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
-using WordChainGame.Common.Enumerations;
-using WordChainGame.Data.Entities;
-using WordChainGame.Services.Services;
-using WordChainGame.Web.Models;
+﻿
 
 namespace WordChainGame.Web.Controllers
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.Owin.Security;
+    using Microsoft.Owin.Security.Cookies;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Security.Claims;
+    using System.Security.Cryptography;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Http;
+    using WordChainGame.Common.Enumerations;
+    using WordChainGame.Data.Entities;
+    using WordChainGame.Services.Services;
+    using WordChainGame.Web.Models;
+
     [Authorize]
     [RoutePrefix("api/users")]
     public class UsersController : ApiController

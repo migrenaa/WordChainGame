@@ -1,10 +1,10 @@
-﻿using System;
-using WordChainGame.DTO.Topic;
-using WordChainGame.DTO.User;
-using WordChainGame.DTO.Word;
-
+﻿
 namespace WordChainGame.DTO.InappropriateWordRequests
 {
+    using System;
+    using WordChainGame.DTO.User;
+    using WordChainGame.DTO.Word;
+
     public class InappropriateWordRequestsResponseModel
     {
         public int Id { get; set; }

@@ -7,7 +7,6 @@ namespace WordChainGame.Tests.Services
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using WordChainGame.Common.CustomExceptions;
     using WordChainGame.Data.Entities;

@@ -53,7 +53,6 @@
     <Compile Include="Topic\DetailsTopicResponseModel.cs" />
     <Compile Include="Topic\PaginatedTopicsResponseModel.cs" />
     <Compile Include="Topic\TopicRequestModel.cs" />
-    <Compile Include="User\DeleteAccountRequestModel.cs" />
     <Compile Include="User\UserResponseModel.cs" />
     <Compile Include="Word\DetailsWordResponseModel.cs" />
     <Compile Include="Word\ListedWordResponseModel.cs" />

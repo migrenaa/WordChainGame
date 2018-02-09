@@ -1,8 +1,10 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using WordChainGame.Data.Entities;
+﻿
 
 namespace WordChainGame.Data.Mappings
 {
+    using System.Data.Entity.ModelConfiguration;
+    using WordChainGame.Data.Entities;
+
     public class TopicMapping : EntityTypeConfiguration<Topic>
     {
         public TopicMapping()

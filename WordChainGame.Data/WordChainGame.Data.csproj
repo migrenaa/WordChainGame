@@ -60,7 +60,6 @@
     <Compile Include="Entities\Word.cs" />
     <Compile Include="Mappings\InappropriateWordRequestMapping.cs" />
     <Compile Include="Mappings\TopicMapping.cs" />
-    <Compile Include="Mappings\UserMappings.cs" />
     <Compile Include="Mappings\WordMapping.cs" />
     <Compile Include="Migrations\201802041355367_initial.cs" />
     <Compile Include="Migrations\201802041355367_initial.Designer.cs">

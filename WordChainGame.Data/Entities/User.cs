@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿
 
 namespace WordChainGame.Data.Entities
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+
     public partial class User : IdentityUser
     {
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager, string authenticationType)
@@ -17,9 +19,9 @@ namespace WordChainGame.Data.Entities
         }
         public User()
         {
-            this.Words = new HashSet<Word>();
-            this.Topics = new HashSet<Topic>();
-            this.InappropriateWordRequests = new HashSet<InappropriateWordRequest>();
+            Words = new HashSet<Word>();
+            Topics = new HashSet<Topic>();
+            InappropriateWordRequests = new HashSet<InappropriateWordRequest>();
         }
         public string FullName { get; set; }
         public virtual ICollection<Word> Words { get; set; }
