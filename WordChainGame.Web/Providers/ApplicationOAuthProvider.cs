@@ -3,6 +3,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,12 +15,7 @@ namespace WordChainGame.Web.Providers
 
         public ApplicationOAuthProvider(string publicClientId)
         {
-            if (publicClientId == null)
-            {
-                throw new ArgumentNullException("publicClientId");
-            }
-
-            _publicClientId = publicClientId;
+            _publicClientId = publicClientId ?? throw new ArgumentNullException("publicClientId");
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
@@ -49,6 +45,10 @@ namespace WordChainGame.Web.Providers
             {
                 context.AdditionalResponseParameters.Add(property.Key, property.Value);
             }
+
+
+            string role = context.Identity.Claims.Where(c => c.Type.Contains("role")).Select(c => c.Value).SingleOrDefault();
+            context.AdditionalResponseParameters.Add("user_role", role);
 
             return Task.FromResult<object>(null);
         }
