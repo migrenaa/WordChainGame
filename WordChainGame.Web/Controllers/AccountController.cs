@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -7,33 +11,23 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
 using WordChainGame.Common.Enumerations;
 using WordChainGame.Data.Entities;
-using WordChainGame.DTO.User;
 using WordChainGame.Services.Services;
 using WordChainGame.Web.Models;
-using WordChainGame.Web.Providers;
-using WordChainGame.Web.Results;
 
 namespace WordChainGame.Web.Controllers
 {
     [Authorize]
-    [RoutePrefix("api/Account")]
-    public class AccountController : ApiController
+    [RoutePrefix("api/users")]
+    public class UsersController : ApiController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
         private IUserService users;
 
-        public AccountController(IUserService users)
+        public UsersController(IUserService users)
         {
             this.users = users;
         }
@@ -62,22 +56,7 @@ namespace WordChainGame.Web.Controllers
         }
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
-
-        // GET api/Account/UserInfo
-        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        [Route("UserInfo")]
-        public UserInfoViewModel GetUserInfo()
-        {
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
-
-            return new UserInfoViewModel
-            {
-                Email = User.Identity.GetUserName(),
-                HasRegistered = externalLogin == null,
-                LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
-            };
-        }
-
+        
         // POST api/Account/Logout
         [Route("Logout")]
         public IHttpActionResult Logout()
@@ -85,28 +64,13 @@ namespace WordChainGame.Web.Controllers
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
             return Ok();
         }
+        
 
-       
-        // POST api/Account/ChangePassword
-        [Route("ChangePassword")]
-        public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-                model.NewPassword);
-            
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
-        }
-
+        /// <summary>
+        /// Deletes user with his user info. There is validation by password.
+        /// </summary>
+        /// <param name="password">The password</param>
+        /// <returns></returns>
         [Authorize]
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteAccount(string password)
@@ -136,9 +100,14 @@ namespace WordChainGame.Web.Controllers
 
 
       
-        // POST api/Account/Register
+        /// <summary>
+        /// Registers user in the system. 
+        /// </summary>
+        /// <param name="model">The model with the information with the user.</param>
+        /// <returns></returns>
         [AllowAnonymous]
-        [Route("Register")]
+        [HttpPost]
+        [Route("")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
             if (!ModelState.IsValid)
