@@ -69,6 +69,7 @@ namespace WordChainGame.Web.Controllers
             topic.WordsCount = 0;
 
             var added = this.unitOfWork.Topics.Insert(topic);
+            this.unitOfWork.Commit();
             return Ok(this.mapper.Map<DetailsTopicResponseModel>(added));
         }
 

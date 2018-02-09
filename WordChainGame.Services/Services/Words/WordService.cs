@@ -30,5 +30,20 @@ namespace WordChainGame.Services.Services.Words
             inappropriateRequest.FirstOrDefault().InappropriateWord.IsDeleted = true;
             unitOfWork.Commit();
         }
+
+        public void DeleteInappropriateWordRequestForWord(int wordId)
+        {
+            var inappropriateRequest = unitOfWork.InappropriateWordRequests
+                                                 .Get(filter: r => r.InappropriateWordId == wordId,
+                                                      includeProperties: "InappropriateWord.Topic")
+                                                 .ToList();
+
+            for (int i = 0; i < inappropriateRequest.Count(); i++)
+            {
+                inappropriateRequest[i].IsInappropriate = false;
+            }
+
+            unitOfWork.Commit();
+        }
     }
 }

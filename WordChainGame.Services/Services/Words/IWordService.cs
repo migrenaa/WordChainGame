@@ -3,5 +3,6 @@
     public interface IWordService
     {
         void Delete(int wordId);
+        void DeleteInappropriateWordRequestForWord(int wordId);
     }
 }

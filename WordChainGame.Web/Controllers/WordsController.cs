@@ -56,31 +56,26 @@ namespace WordChainGame.Web.Controllers
 
 
         /// <summary>
-        /// Gets all requests for inappropriate word which are still not marked as inappropriate or not.
+        /// Removes inappropriate word request.
         /// </summary>
-        /// <param name="top">Pagination model</param>
-        /// <param name="skip">Pagination model</param>
-        /// <returns>Paginated result for the requests</returns>
+        /// <param name="id">The id of the inappropriate word request</param>
+        /// <returns>Details about the request.</returns>
         [HttpDelete]
         [Authorize(Roles = "Admin")]
-        [Route("inappropriate")]
-        [SwaggerResponse(HttpStatusCode.OK, "All inappropriate words requests.", typeof(PaginatedInappropriateWordRequests))]
-        public IHttpActionResult Delete(int top, int skip)
+        [Route("{wordId}/inappropriate")]
+        [SwaggerResponse(HttpStatusCode.OK, "Suucessfully deleted inappropriate word request.")]
+        [SwaggerResponse(HttpStatusCode.NotFound, "Word not found")]
+        public IHttpActionResult UpdateInappropriateWord(int wordId)
         {
-            var requests = unitOfWork.InappropriateWordRequests
-                                     .Get(filter: r => r.IsInappropriate == null,
-                                          includeProperties: "Requester, InappropriateWord.Topic");
-
-            var paginatedRequests = requests.Skip(skip).Take(top);
-            int count = requests.Count();
-            var response = new PaginatedInappropriateWordRequests
+            var word = unitOfWork.Words.Get(w => w.Id == wordId);
+            if(word == null)
             {
-                Count = count,
-                InappropriateWordRequests = mapper.Map<ICollection<InappropriateWordRequestsResponseModel>>(paginatedRequests),
-                NextPageUrl = top + skip > count ? null : string.Format("api/words/inappropriate?top={0}&skip={1}", top, top + skip),
-                PreviousPageUrl = skip - top < 0 ? null : string.Format("api/words/inappropriate?top={0}&skip={1}", top, skip - top),
-            };
-            return Ok(response);
+                return NotFound();
+            }
+
+            words.DeleteInappropriateWordRequestForWord(wordId);
+
+            return Ok();
         }
 
         /// <summary>
@@ -95,7 +90,8 @@ namespace WordChainGame.Web.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, "Invalid word Id.")]
         public IHttpActionResult Delete(int wordId)
         {
-            if (unitOfWork.Words.GetByID(wordId) == null)
+            var word = unitOfWork.Words.Get(w => w.Id == wordId);
+            if (word == null)
             {
                 return NotFound();
             }

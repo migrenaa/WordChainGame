@@ -22,9 +22,7 @@ namespace WordChainGame.Web.Controllers
     [RoutePrefix("api/users")]
     public class UsersController : ApiController
     {
-        private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
-        private ApplicationRoleManager _roleManager;
         private IUserService users;
 
         public UsersController(IUserService users)
@@ -43,20 +41,7 @@ namespace WordChainGame.Web.Controllers
                 _userManager = value;
             }
         }
-        public ApplicationRoleManager RoleManager
-        {
-            get
-            {
-                return _roleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
-            }
-            private set
-            {
-                _roleManager = value;
-            }
-        }
-
-        public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
-        
+            
         // POST api/Account/Logout
         [Route("Logout")]
         public IHttpActionResult Logout()
