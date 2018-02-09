@@ -71,8 +71,7 @@
                                        includeProperties: "Words")
                                   .SingleOrDefault();
 
-            var lastWord = topic.Words.Where(w => !w.IsDeleted)
-                                      .OrderBy(w => w.DateCreated)
+            var lastWord = topic.Words.OrderBy(w => w.DateCreated)
                                       .LastOrDefault();
 
             if(lastWord != null)
