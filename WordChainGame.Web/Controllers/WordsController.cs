@@ -73,6 +73,11 @@ namespace WordChainGame.Web.Controllers
                 return NotFound();
             }
 
+            if(word.IsDeleted)
+            {
+                return NotFound();
+            }
+
             words.DeleteInappropriateWordRequestForWord(wordId);
 
             return Ok();
@@ -92,6 +97,11 @@ namespace WordChainGame.Web.Controllers
         {
             var word = unitOfWork.Words.GetByID(wordId);
             if (word == null)
+            {
+                return NotFound();
+            }
+
+            if (word.IsDeleted)
             {
                 return NotFound();
             }
